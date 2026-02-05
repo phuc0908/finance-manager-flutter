@@ -40,9 +40,9 @@ dependencies:
   path_provider: ^2.1.2
   
   # Firebase & Cloud
-  firebase_core: ^2.24.2
-  firebase_auth: ^4.16.0
-  cloud_firestore: ^4.14.0
+  firebase_core: ^3.4.0
+  firebase_auth: ^5.1.4
+  cloud_firestore: ^5.4.02
   
   # UI & Design
   google_fonts: ^6.1.0
@@ -54,7 +54,7 @@ dependencies:
   image_picker: ^1.0.7
   
   # Notifications
-  flutter_local_notifications: ^16.3.2
+  flutter_local_notifications: ^17.0.0
   timezone: ^0.9.2
   
   # Utilities

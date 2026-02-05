@@ -1,12 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/presentation/pages/onboarding_page.dart';
+import 'features/auth/presentation/providers/auth_provider.dart';
+import 'features/dashboard/presentation/pages/dashboard_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // TODO: Initialize Firebase
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   // TODO: Initialize Isar Database
   // await IsarService.getInstance();
@@ -24,15 +28,56 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light, // TODO: Get from settings provider
-      home: const SplashScreen(),
+      themeMode: ThemeMode.light,
+      home: const AuthWrapper(),
+    );
+  }
+}
+
+class AuthWrapper extends ConsumerWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+
+    return authState.when(
+      data: (user) {
+        if (user != null) {
+          return const DashboardPage();
+        }
+        return const SplashScreen(); // Or Login directly, but better to show Splash first
+      },
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (e, trace) => Scaffold(body: Center(child: Text('Error: $e'))),
     );
   }
 }
 
 // Temporary Splash Screen
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNext();
+  }
+
+  _navigateToNext() async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const OnboardingPage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +96,6 @@ class SplashScreen extends StatelessWidget {
               'Finance Manager',
               style: Theme.of(context).textTheme.displaySmall,
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Quản lý chi tiêu thông minh',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 48),
-            const CircularProgressIndicator(),
           ],
         ),
       ),
