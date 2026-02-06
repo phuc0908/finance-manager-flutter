@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
+import 'core/services/isar_service.dart';
 import 'features/auth/presentation/pages/onboarding_page.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
 import 'features/dashboard/presentation/pages/dashboard_page.dart';
@@ -12,8 +13,8 @@ void main() async {
   // TODO: Initialize Firebase
   await Firebase.initializeApp();
 
-  // TODO: Initialize Isar Database
-  // await IsarService.getInstance();
+  // Initialize Isar Database
+  await IsarService.getInstance();
 
   runApp(const ProviderScope(child: MyApp()));
 }

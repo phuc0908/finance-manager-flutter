@@ -3,6 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/pages/login_page.dart';
+import '../../../transaction/domain/entities/transaction_entity.dart';
+import '../../../transaction/presentation/providers/transaction_provider.dart';
+import '../../../wallet/presentation/providers/wallet_provider.dart';
+import '../../../wallet/presentation/pages/wallet_page.dart';
+import '../../../transaction/presentation/pages/transaction_list_page.dart';
+import '../../../transaction/presentation/pages/add_transaction_page.dart';
+import '../widgets/dashboard_summary_card.dart';
+import '../widgets/recent_transactions_list.dart';
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
@@ -10,9 +18,28 @@ class DashboardPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Tổng quan'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Xin chào,', style: Theme.of(context).textTheme.bodySmall),
+            Text(
+              'Người dùng', // TODO: Get name from Auth
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ],
+        ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.account_balance_wallet),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const WalletPage()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
@@ -27,20 +54,47 @@ class DashboardPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.dashboard, size: 80, color: AppTheme.primaryColor),
-            const SizedBox(height: 16),
-            Text(
-              'Dashboard Placeholder',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const DashboardSummaryCard(),
+            const SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Giao dịch gần đây',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const TransactionListPage(),
+                      ),
+                    );
+                  },
+                  child: const Text('Xem tất cả'),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            const Text('Chức năng đang phát triển...'),
+            const SizedBox(height: 16),
+            const RecentTransactionsList(),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddTransactionPage()),
+          );
+        },
+        backgroundColor: AppTheme.primaryColor,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
