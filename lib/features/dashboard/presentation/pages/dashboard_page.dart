@@ -25,7 +25,9 @@ class DashboardPage extends ConsumerWidget {
           children: [
             Text('Xin chào,', style: Theme.of(context).textTheme.bodySmall),
             Text(
-              'Người dùng', // TODO: Get name from Auth
+              ref.watch(authStateProvider).value?.displayName ??
+                  ref.watch(authStateProvider).value?.email.split('@').first ??
+                  'Người dùng',
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ],
