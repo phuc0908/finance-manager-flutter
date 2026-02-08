@@ -2,13 +2,13 @@
 
 Ứng dụng quản lý tài chính cá nhân được xây dựng bằng Flutter, tập trung vào trải nghiệm mượt mà, bảo mật dữ liệu và đồng bộ hóa đám mây.
 
-## 📸 Hình ảnh minh họa (Preview)
+## (Preview)
 
 | Dashboard | Quản lý ví | Thêm giao dịch | Cài đặt |
 | :---: | :---: | :---: | :---: |
-| ![Dashboard](C:\Users\phuc0\.gemini\antigravity\brain\6513b30f-1a1e-4d0c-b0d1-8e924aaefed4\media__1770541761017.png) | ![Ví tiền](C:\Users\phuc0\.gemini\antigravity\brain\6513b30f-1a1e-4d0c-b0d1-8e924aaefed4\media__1770541772365.png) | ![Giao dịch](C:\Users\phuc0\.gemini\antigravity\brain\6513b30f-1a1e-4d0c-b0d1-8e924aaefed4\media__1770541783357.png) | ![Cài đặt](C:\Users\phuc0\.gemini\antigravity\brain\6513b30f-1a1e-4d0c-b0d1-8e924aaefed4\media__1770541750290.png) |
+| ![Dashboard](https://drive.google.com/file/d/1GDMDfYPSO9OFw_1F7f_Ng9CAKeSTUaih/view?usp=drive_link) | ![Ví tiền](https://drive.google.com/file/d/1jgVFYkvqAvdQVCA52pSHWHyQBl48zAx4/view?usp=drive_link) | ![Giao dịch](https://drive.google.com/file/d/1EsDr4BcNK29Rb2vWSUvrvpt7Oin3nnn_/view?usp=drive_link) | ![Cài đặt](https://drive.google.com/file/d/13p-ecqJ394P4ZGe7MYg5X_TzW4Cw_3FI/view?usp=sharing) |
 
-## ✨ Tính năng chính
+## Tính năng chính
 
 - **Tổng quan tài chính (Dashboard)**: Theo dõi số dư, thu nhập và chi tiêu trong tháng với giao diện hiện đại.
 - **Quản lý ví**: Hỗ trợ nhiều loại ví khác nhau (Tiền mặt, Ngân hàng, Thẻ tín dụng...).
@@ -28,22 +28,5 @@
 - **Backend**: `Firebase` (Auth & Firestore)
 - **Kiến trúc**: Clean Architecture (Data, Domain, Presentation)
 
-## 🚀 Hướng dẫn cài đặt
-
-1. **Clone project**:
-   ```bash
-   git clone <url_du_an>
-   ```
-2. **Cài đặt dependencies**:
-   ```bash
-   flutter pub get
-   ```
-3. **Cài đặt Developer Mode**:
-   - Nếu bạn dùng Windows, hãy bật **Developer Mode** trong cài đặt hệ thống để hỗ trợ Symlinks.
-4. **Chạy ứng dụng**:
-   ```bash
-   flutter run
-   ```
-
 ---
-*Phát triển bởi Hy Phương*
+*Phát triển bởi Phuc0908*
