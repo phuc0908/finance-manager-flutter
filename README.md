@@ -6,7 +6,7 @@
 
 | Dashboard | Quản lý ví | Thêm giao dịch | Cài đặt |
 | :---: | :---: | :---: | :---: |
-| ![Dashboard](https://drive.google.com/file/d/1GDMDfYPSO9OFw_1F7f_Ng9CAKeSTUaih/view?usp=drive_link) | ![Ví tiền](https://drive.google.com/file/d/1jgVFYkvqAvdQVCA52pSHWHyQBl48zAx4/view?usp=drive_link) | ![Giao dịch](https://drive.google.com/file/d/1EsDr4BcNK29Rb2vWSUvrvpt7Oin3nnn_/view?usp=drive_link) | ![Cài đặt](https://drive.google.com/file/d/13p-ecqJ394P4ZGe7MYg5X_TzW4Cw_3FI/view?usp=sharing) |
+| ![Dashboard](preview/Screenshot%202026-02-08%20160918.png) | ![Ví tiền](preview/Screenshot%202026-02-08%20160930.png) | ![Giao dịch](preview/Screenshot%202026-02-08%20160941.png) | ![Cài đặt](preview/Screenshot%202026-02-08%20160859%20-%20Copy.png) |
 
 ## Tính năng chính
 
