@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../domain/entities/transaction_entity.dart';
-import '../../../wallet/domain/entities/wallet_entity.dart';
 import '../../../wallet/presentation/providers/wallet_provider.dart';
 import '../../../wallet/presentation/pages/add_wallet_page.dart';
 import '../providers/transaction_provider.dart';
@@ -22,7 +21,7 @@ class _AddTransactionPageState extends ConsumerState<AddTransactionPage> {
   TransactionType _type = TransactionType.expense;
   DateTime _selectedDate = DateTime.now();
   String _selectedCategory = 'food'; // Default
-  WalletEntity? _selectedWallet;
+  int? _selectedWalletId;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -128,28 +127,29 @@ class _AddTransactionPageState extends ConsumerState<AddTransactionPage> {
                   }
 
                   // Set default wallet if not set
-                  if (_selectedWallet == null && wallets.isNotEmpty) {
+                  if (_selectedWalletId == null && wallets.isNotEmpty) {
                     Future.microtask(() {
                       if (mounted) {
+                        final defaultWallet = wallets.firstWhere(
+                          (w) => w.isDefault,
+                          orElse: () => wallets.first,
+                        );
                         setState(() {
-                          _selectedWallet = wallets.firstWhere(
-                            (w) => w.isDefault,
-                            orElse: () => wallets.first,
-                          );
+                          _selectedWalletId = defaultWallet.id;
                         });
                       }
                     });
                   }
 
-                  return DropdownButtonFormField<WalletEntity>(
-                    value: _selectedWallet,
+                  return DropdownButtonFormField<int>(
+                    value: _selectedWalletId,
                     decoration: const InputDecoration(
                       labelText: 'Ví',
                       prefixIcon: Icon(Icons.account_balance_wallet),
                     ),
                     items: wallets.map((wallet) {
                       return DropdownMenuItem(
-                        value: wallet,
+                        value: wallet.id,
                         child: Text(
                           '${wallet.name} (${NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(wallet.balance)})',
                         ),
@@ -157,7 +157,7 @@ class _AddTransactionPageState extends ConsumerState<AddTransactionPage> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        _selectedWallet = value;
+                        _selectedWalletId = value;
                       });
                     },
                     validator: (value) =>
@@ -287,7 +287,7 @@ class _AddTransactionPageState extends ConsumerState<AddTransactionPage> {
     final user = ref.read(authStateProvider).value;
     if (user == null) return;
 
-    if (_formKey.currentState!.validate() && _selectedWallet != null) {
+    if (_formKey.currentState!.validate() && _selectedWalletId != null) {
       final repository = ref.read(transactionRepositoryProvider);
 
       final transaction = TransactionEntity(
@@ -295,8 +295,7 @@ class _AddTransactionPageState extends ConsumerState<AddTransactionPage> {
         amount: double.parse(_amountController.text),
         type: _type,
         category: _selectedCategory,
-        walletId: _selectedWallet!.id
-            .toString(), // Assuming string ID for now, might need fix if int
+        walletId: _selectedWalletId!.toString(),
         note: _noteController.text.trim(),
         createdAt: _selectedDate,
       );
@@ -314,6 +313,7 @@ class _AddTransactionPageState extends ConsumerState<AddTransactionPage> {
           // Note: Ideally, TransactionRepository.addTransaction should update WalletEntity balance.
           ref.invalidate(recentTransactionsProvider);
           ref.invalidate(allTransactionsProvider); // Refresh list
+          ref.invalidate(walletListProvider); // Refresh wallets
           ref.invalidate(totalBalanceProvider);
           ref.invalidate(incomeProvider);
           ref.invalidate(expenseProvider);

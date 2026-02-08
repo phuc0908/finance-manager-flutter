@@ -63,4 +63,17 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     await _authRepository.signOut();
     state = const AsyncValue.data(null);
   }
+
+  Future<void> updateProfile({String? name, String? photoUrl}) async {
+    state = const AsyncValue.loading();
+    final result = await _authRepository.updateProfile(
+      name: name,
+      photoUrl: photoUrl,
+    );
+    result.fold(
+      (failure) =>
+          state = AsyncValue.error(failure.message, StackTrace.current),
+      (success) => state = const AsyncValue.data(null),
+    );
+  }
 }

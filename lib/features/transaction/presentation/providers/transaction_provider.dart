@@ -4,8 +4,10 @@ import '../../domain/entities/transaction_entity.dart';
 import '../../domain/repositories/transaction_repository.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
+import '../../../../core/services/firestore_service.dart';
+
 final transactionRepositoryProvider = Provider<TransactionRepository>((ref) {
-  return TransactionRepositoryImpl();
+  return TransactionRepositoryImpl(ref.watch(firestoreServiceProvider));
 });
 
 final recentTransactionsProvider =

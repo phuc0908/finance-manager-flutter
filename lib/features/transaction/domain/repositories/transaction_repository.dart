@@ -22,4 +22,7 @@ abstract class TransactionRepository {
     required DateTime end,
   });
   Future<Either<Failure, void>> deleteAllTransactions({required String userId});
+  Future<Either<Failure, void>> saveTransactions(
+    List<TransactionEntity> transactions,
+  );
 }

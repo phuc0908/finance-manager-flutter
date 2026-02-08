@@ -123,6 +123,34 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> updateProfile({
+    String? name,
+    String? photoUrl,
+  }) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) return const Left(AuthFailure('No user logged in'));
+
+      // 1. Update Firebase Auth Profile
+      if (name != null) await user.updateDisplayName(name);
+      if (photoUrl != null) await user.updatePhotoURL(photoUrl);
+
+      // 2. Update Firestore document
+      final updateData = <String, dynamic>{};
+      if (name != null) updateData['displayName'] = name;
+      if (photoUrl != null) updateData['photoUrl'] = photoUrl;
+
+      if (updateData.isNotEmpty) {
+        await _firestore.collection('users').doc(user.uid).update(updateData);
+      }
+
+      return const Right(null);
+    } catch (e) {
+      return Left(AuthFailure(e.toString()));
+    }
+  }
+
   String _mapFirebaseAuthError(String code) {
     switch (code) {
       case 'user-not-found':

@@ -14,5 +14,6 @@ abstract class AuthRepository {
   );
   Future<Either<Failure, void>> signOut();
   Future<Either<Failure, UserEntity>> getCurrentUser();
+  Future<Either<Failure, void>> updateProfile({String? name, String? photoUrl});
   Stream<UserEntity?> get authStateChanges;
 }

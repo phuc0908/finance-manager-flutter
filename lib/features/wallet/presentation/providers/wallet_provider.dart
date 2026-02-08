@@ -4,8 +4,10 @@ import '../../domain/entities/wallet_entity.dart';
 import '../../domain/repositories/wallet_repository.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
+import '../../../../core/services/firestore_service.dart';
+
 final walletRepositoryProvider = Provider<WalletRepository>((ref) {
-  return WalletRepositoryImpl();
+  return WalletRepositoryImpl(ref.watch(firestoreServiceProvider));
 });
 
 final walletListProvider = FutureProvider<List<WalletEntity>>((ref) async {

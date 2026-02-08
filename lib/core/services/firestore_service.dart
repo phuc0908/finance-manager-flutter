@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/wallet/domain/entities/wallet_entity.dart';
 import '../../features/transaction/domain/entities/transaction_entity.dart';
+
+final firestoreServiceProvider = Provider<FirestoreService>((ref) {
+  return FirestoreService();
+});
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

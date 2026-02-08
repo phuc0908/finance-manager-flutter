@@ -5,7 +5,10 @@ import 'core/theme/app_theme.dart';
 import 'core/services/isar_service.dart';
 import 'features/auth/presentation/pages/onboarding_page.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
-import 'features/dashboard/presentation/pages/dashboard_page.dart';
+import 'features/navigation/presentation/pages/main_screen.dart';
+import 'core/services/sync_service.dart';
+import 'features/wallet/presentation/providers/wallet_provider.dart';
+import 'features/transaction/presentation/providers/transaction_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +48,7 @@ class AuthWrapper extends ConsumerWidget {
     return authState.when(
       data: (user) {
         if (user != null) {
-          return const DashboardPage();
+          return SyncWrapper(userId: user.id, child: const MainScreen());
         }
         return const SplashScreen(); // Or Login directly, but better to show Splash first
       },
@@ -53,6 +56,38 @@ class AuthWrapper extends ConsumerWidget {
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, trace) => Scaffold(body: Center(child: Text('Error: $e'))),
     );
+  }
+}
+
+class SyncWrapper extends ConsumerStatefulWidget {
+  final String userId;
+  final Widget child;
+
+  const SyncWrapper({super.key, required this.userId, required this.child});
+
+  @override
+  ConsumerState<SyncWrapper> createState() => _SyncWrapperState();
+}
+
+class _SyncWrapperState extends ConsumerState<SyncWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    // Trigger sync when this wrapper is built (meaning user just logged in or app restarted with session)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(syncServiceProvider).syncFromCloud(widget.userId).then((_) {
+        // Refresh providers after sync
+        ref.invalidate(walletListProvider);
+        ref.invalidate(recentTransactionsProvider);
+        ref.invalidate(totalBalanceProvider);
+        ref.invalidate(allTransactionsProvider);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }
 
